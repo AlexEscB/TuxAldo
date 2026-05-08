@@ -1,5 +1,3 @@
-
-
 import flet as ft
 
 class CustomBuPrincipal(ft.Container):
@@ -52,5 +50,23 @@ class CustomBuPrincipal(ft.Container):
         else:
             return self.colortxt
 
+
+class ButtonAddTracs(ft.Container):
+    def __init__(self, on_clic=None):
+        super().__init__()
+        self.bgcolor = "#ffd900"
+        self.width = 20
+        self.height = 20
+        self.border_radius = 10
+        self.padding = 10
+        self.margin = ft.Margin.only(bottom=10)
+        self.border = ft.Border.all(1, "#1B263B")
+        self.ink = True
+        self.shadow = ft.BoxShadow(
+            blur_radius=5,
+            color=ft.Colors.with_opacity(0.2, ft.Colors.BLACK),
+            offset=ft.Offset(0, 2),
+        )
+        
     
 

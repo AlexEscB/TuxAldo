@@ -1,5 +1,5 @@
 import flet as ft
-from typing import List, Union
+from typing import List
 
 class ScrollableCardList(ft.Container):
     def __init__(self,  cards: List[ft.Container] = None):
