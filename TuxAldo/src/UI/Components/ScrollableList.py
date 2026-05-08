@@ -27,7 +27,7 @@ class ScrollableCardList(ft.Container):
                     expand=True,
                 )
             ],
-
+    
         )
 
     def add_card(self, card: ft.Container):
