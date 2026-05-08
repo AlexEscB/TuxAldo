@@ -9,7 +9,8 @@ except:
 
 
 class Day:
-    def __init__(self, date):
+    def __init__(self, id, date):
+        self.id = id
         self.date = datetime.datetime.strptime(date, '%Y-%m-%d')
         self.transactions = []
         self.title = self.date.strftime("%A").capitalize()  # Nombre del día de la semana

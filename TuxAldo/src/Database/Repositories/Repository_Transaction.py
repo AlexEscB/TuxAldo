@@ -18,7 +18,7 @@ class TransactionDao:
             INSERT INTO transactions (title, date, value, category, type, description)
             VALUES (?, ?, ?, ?, ?, ?)
         ''', (transaction.title, transaction.date.strftime('%Y-%m-%d'), transaction.value, transaction.category, transaction.type, transaction.description))
-
+    
         self.db.conn.commit()
 
     def find_by_date(self, date):

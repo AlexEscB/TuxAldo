@@ -1,7 +1,7 @@
 import sqlite3 as sql
 
 from Database.database_connector import DatabaseConnector
-from models.Week import Week
+from models.week import Week
 
 class WeekDao:
 

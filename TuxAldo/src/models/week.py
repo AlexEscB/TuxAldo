@@ -1,9 +1,10 @@
 import datetime
 
 class Week:
-    def __init__(self, title, start_date, end_date):
+    def __init__(self, id, title, start_date, end_date):
 
         self.title = title
+        self.id = id
         self.start_date = datetime.datetime.strptime(start_date, '%Y-%m-%d')
         self.end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d')
         self.days = []

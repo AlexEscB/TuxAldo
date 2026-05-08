@@ -2,7 +2,8 @@ import datetime
 from .week import Week
 
 class Month:
-    def __init__(self, title, date_start):
+    def __init__(self, id, title, date_start):
+        self.id = id
         self.title = title    
         self.date = datetime.datetime.strptime(date_start, '%Y-%m-%d')
         self.weeks = []
