@@ -172,7 +172,8 @@ class CategoryComponent(ft.Container):
             self._on_type_change(tipo)
 
     def _handle_category_change(self, categoria: str):
-        """Notifica a la view la categoría elegida."""
+        print("CategoryComponent recibió:", categoria)
+
         if self._on_category_change:
             self._on_category_change(categoria)
     

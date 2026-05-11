@@ -63,6 +63,5 @@ class AddTransaccionView(ft.View):
         print(f"Tipo seleccionado: {tipo}")  # reemplaza con tu lógica
 
     def _on_category_change(self, categoria: str):
-        """Se dispara cuando el usuario elige una categoría."""
         self._selected_category = categoria
-        print(f"Categoría seleccionada: {categoria}")  # reemplaza con tu lógica
+        print(f"Categoría seleccionada: {categoria}")

@@ -12,29 +12,43 @@ class AddTransactionController():
 
 
     
-    def on_save(self,e):
+    def on_save(self, e):
+        print("Botón guardar presionado")
+
         title = self._view.title_component.title_textfield.value
         description = self._view.details_component.details_textfield.value
-        raw_value= self._view.value_comp.value_textfield.value
-        type = self._view._selected_type
-        category = self._view._selected_category
+        raw_value = self._view.value_comp.value_textfield.value
+        tipo = self._view._selected_type
+        category = self._view.category_comp.dropdown.dropdown.value
 
-        if not self._is_valid(title, raw_value, type, category):
+        print("Título:", title)
+        print("Descripción:", description)
+        print("Valor:", raw_value)
+        print("Tipo:", tipo)
+        print("Categoría:", category)
+
+        if not self._is_valid(title, raw_value, tipo, category):
+            print("Validación falló")
             return
 
-        value = float(raw_value.replace(",","."))
+        print("Validación correcta")
+
+        value = float(raw_value.replace(",", "."))
 
         transac = Transaction(
-            id=None,                              # la BD asigna el id
+            id=None,
             title=title,
             date=datetime.now().strftime('%Y-%m-%d'),
             value=value,
             category=category,
-            type=type,
+            type=tipo,
             description=description,
         )
 
         self._dao.save_transaction(transac)
+
+        print("Transacción guardada")
+        self._show_message("Transacción guardada correctamente")
 
     def on_cancel(self, e):
         self._view.page.views.pop()

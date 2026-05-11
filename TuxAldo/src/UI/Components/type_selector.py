@@ -166,16 +166,18 @@ class DropdownCategory(ft.Container):
         self.content = self.dropdown
 
     def _handle_change(self, e):
-        """Se dispara cuando el usuario elige una categoría."""
+        print("Drpdown cambio:  ", e.control.value )
         if self._on_change_callback:
             self._on_change_callback(self.dropdown.value)
 
     def update_categories(self, tipo: str):
-        """
-        Llamado por TypeSelector (vía el padre) cuando cambia el tipo.
-        Usa .get() para evitar KeyError si llega un tipo inesperado.
-        """
         categorias = self.CATEGORIES.get(tipo, [])
-        self.dropdown.options = [ft.dropdown.Option(cat) for cat in categorias]
-        self.dropdown.value = None  # resetea la selección anterior
-        self.dropdown.update()
+
+        self.dropdown.options = [
+            ft.dropdown.Option(cat) for cat in categorias
+        ]
+
+        self.dropdown.value = None
+        self.dropdown.hint_text = "Selecciona una categoría"
+
+        self.update()
