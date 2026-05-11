@@ -1,6 +1,5 @@
 import flet as ft
  
-
 from UI.Components.custom_side_bar import CustomBottomBar
 from UI.Components.add_trasaction_components import DetailsComponent
 from UI.Components.add_trasaction_components import TitleComponent
@@ -8,7 +7,6 @@ from UI.Components.add_trasaction_components import ValueComponent
 from UI.Components.add_trasaction_components import CategoryComponent
 from UI.Components.add_trasaction_components import RowButtons
 from controllers.add_transaction_controller import  AddTransactionController
-
 
 class AddTransaccionView(ft.View):
     def __init__(self, page: ft.Page):

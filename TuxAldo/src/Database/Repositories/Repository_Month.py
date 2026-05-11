@@ -8,7 +8,8 @@ class MonthDao:
 
         self.db = DatabaseConnector()
 
-
+    #funcion de guardado en la base de datos 
+        #toma 
     def save_month(self, year_id, month_title, month_date):
         cursor = self.db.cursor
         cursor.execute('''
