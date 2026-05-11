@@ -4,8 +4,8 @@ class DatabaseConnector:
 
     def __init__(self, db_name = 'kakebo.db'):
         self.db_name = db_name
-        self.conn = sql.connect(self.db_name)
-        self.cursor = self.conn.cursor()
+        self.conn = None
+        self.cursor = None
 
     def create_tables(self):
         cursor = self.cursor
@@ -52,3 +52,13 @@ class DatabaseConnector:
         ''')
         self.conn.commit()
 
+    def connect(self):
+        self.conn = sql.connect(self.db_name)
+        self.cursor = self.conn.cursor()
+    
+    def disconnect(self):
+        if self.conn:
+            self.conn.commit()
+            self.conn.close()
+            self.conn = None
+            self.cursor = None

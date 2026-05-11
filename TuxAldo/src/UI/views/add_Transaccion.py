@@ -7,6 +7,7 @@ from UI.Components.add_trasaction_components import TitleComponent
 from UI.Components.add_trasaction_components import ValueComponent
 from UI.Components.add_trasaction_components import CategoryComponent
 from UI.Components.add_trasaction_components import RowButtons
+from controllers.add_transaction_controller import  AddTransactionController
 
 
 class AddTransaccionView(ft.View):
@@ -27,6 +28,14 @@ class AddTransaccionView(ft.View):
             on_type_change=self._on_type_change,
             on_category_change=self._on_category_change,
         )
+
+        # controlador
+
+        self.controller = AddTransactionController(self)
+
+        # Conectamos los botones DESPUÉS de crear el controlador
+        self.row_bottoms.save_button.on_click   = self.controller.on_save
+        self.row_bottoms.cancel_button.on_click = self.controller.on_cancel
 
         super().__init__(
             route="/add_transaccion",

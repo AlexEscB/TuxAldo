@@ -40,9 +40,8 @@ class CustomBuPrincipal(ft.Container):
 
     
     def _handle_click(self, e):
-        """Handler interno: dispara el callback externo si existe."""
         if self._on_click_callback:
-            self._on_click_callback(self.text)
+            self._on_click_callback(e)
 
     def _set_color_text(self):
         if self.colortxt == None:

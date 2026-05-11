@@ -54,7 +54,7 @@ class DetailsComponent (ft.Container):
     def __init__(self):
         super().__init__()
 
-        self.title_textfield = CustomTextField( "se paga la factura del mes ....", 4, 4, True, False)
+        self.details_textfield = CustomTextField( "se paga la factura del mes ....", 4, 4, True, False)
 
         self.bgcolor = "#04002B"
         self.width = self.expand
@@ -80,7 +80,7 @@ class DetailsComponent (ft.Container):
                         ft.Text("Detalles", size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
                     ]
                 ),
-                self.title_textfield
+                self.details_textfield
 
 
 
@@ -94,7 +94,7 @@ class ValueComponent(ft.Container):
     def __init__(self):
         super().__init__()
 
-        self.title_textfield = CustomTextFiNumber(hiden_text="COP")
+        self.value_textfield = CustomTextFiNumber(hiden_text="COP")
 
         self.bgcolor = "#04002B"
         self.width = self.expand
@@ -116,7 +116,7 @@ class ValueComponent(ft.Container):
 
                         
                 ft.Text("Valor", size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
-                self.title_textfield
+                self.value_textfield
                 
 
 

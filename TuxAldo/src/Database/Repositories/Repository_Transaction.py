@@ -1,26 +1,26 @@
 import sqlite3 as sql
 
-import database_connector
+from Database.database_connector import DatabaseConnector
 from models.Transaction import Transaction
 
 class TransactionDao:
 
     def __init__(self):
 
-        self.db = database_connector.DatabaseConnector()
+        self.db = DatabaseConnector()
 
 
     def save_transaction(self, transaction):
 
-        cursor = self.db.cursor
+        self.db.connect()
 
-        cursor.execute('''
+
+        self.db.cursor.execute('''
             INSERT INTO transactions (title, date, value, category, type, description)
             VALUES (?, ?, ?, ?, ?, ?)
         ''', (transaction.title, transaction.date.strftime('%Y-%m-%d'), transaction.value, transaction.category, transaction.type, transaction.description))
     
-        self.db.conn.commit()
-
+        self.db.disconnect()
     def find_by_date(self, date):
 
         cursor = self.db.cursor

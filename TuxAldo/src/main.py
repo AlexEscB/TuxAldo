@@ -87,7 +87,7 @@ async def main(page: ft.Page):
             page.views.append(AddTransaccionView(page))  # Aquí puedes pasar el día que quieras mostrar
         
         elif page.route == "/add_transaccion":
-
+            
             await page.push_route("/")
 
             
