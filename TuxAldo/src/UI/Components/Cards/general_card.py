@@ -63,7 +63,7 @@ class GeneralCard(ft.Container):
                 ft.Row(
                     alignment=ft.MainAxisAlignment.CENTER,
                     controls=[
-                        ft.Text(
+                        ft.Text(    
                             spans=[
                                 ft.TextSpan(f"Bal: ", ft.TextStyle(weight=ft.FontWeight.BOLD,color=ft.Colors.WHITE)),
                                 ft.TextSpan(f"{prefix} ${abs(obj.balance):,.2f}", ft.TextStyle(weight=ft.FontWeight.BOLD,color="#ffd900"))

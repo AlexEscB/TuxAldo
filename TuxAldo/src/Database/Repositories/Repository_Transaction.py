@@ -39,3 +39,59 @@ class TransactionDao:
         return [Transaction(id=r[0], title=r[1], date=r[2],
                             value=r[3], category=r[4],
                             type=r[5], description=r[6]) for r in rows]
+    
+
+    def get_transactions_in_range(self, start_date, end_date):
+        with sql.connect(DB_NAME) as conn:
+            cursor = conn.cursor()
+
+            cursor.execute(''' 
+                SELECT  
+                    SUM(CASE WHEN type = 'Ingreso' THEN value ELSE 0 END),
+                    SUM(CASE WHEN type = 'Egreso' THEN value ELSE 0 END)
+                FROM transactions
+                WHERE date BETWEEN ? AND ?
+
+            ''', (start_date, end_date))
+            rows = cursor.fetchone()
+            incomes  = rows[0] or 0
+            expenses = rows[1] or 0
+            return {
+                "incomes": incomes,
+                "expenses": expenses,
+                "balance": incomes - expenses
+            }
+        
+    def get_day_summaries_by_week(self, start_date, end_date):
+        with sql.connect(DB_NAME) as conn:
+            cursor = conn.cursor()
+
+            cursor.execute('''
+                SELECT date, 
+                    SUM(CASE WHEN type = 'Ingreso' THEN value ELSE 0 END),
+                    SUM(CASE WHEN type = 'Egreso' THEN value ELSE 0 END)
+                FROM transactions
+                WHERE date BETWEEN ? AND ?
+                GROUP BY date
+
+
+
+            ''',(start_date,  end_date))
+
+            rows = cursor.fetchall()
+            days = []
+
+            for row in rows:
+                day_date = row[0]
+                incomes  = row[1] or 0
+                expenses = row[2] or 0
+                info_day = {
+                    "date": day_date,
+                    "incomes": incomes,
+                    "expenses": expenses,
+                    "balance": incomes - expenses
+                }
+                days.append(info_day)
+
+            return days
+            
