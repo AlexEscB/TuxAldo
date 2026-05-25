@@ -1,13 +1,9 @@
 import flet as ft
-from models.day import Day
-from models.week import Week
-from models.Month import Month
-
-
 
 class BalanceFrame(ft.Container):
-    def __init__(self, obj):
+    def __init__(self, data: dict):
         super().__init__()
+        self.data = data
         self.bgcolor = "#04002B"
         self.width = self.expand
         self.height = 50
@@ -21,7 +17,7 @@ class BalanceFrame(ft.Container):
             offset=ft.Offset(0, 4)
         )
 
-        prefix = "+" if obj.balance >= 0 else "-"
+        prefix = "+" if data["balance"] >= 0 else "-"
 
         self.content = ft.Row(
             alignment=ft.MainAxisAlignment.CENTER,
@@ -30,7 +26,7 @@ class BalanceFrame(ft.Container):
                 ft.Text(
                     spans=[
                         ft.TextSpan(f"Bal: ", ft.TextStyle(weight=ft.FontWeight.BOLD,color=ft.Colors.WHITE)),
-                        ft.TextSpan(f"{prefix} ${abs(obj.balance):,.2f}", ft.TextStyle(weight=ft.FontWeight.BOLD,color="#ffd900"))
+                        ft.TextSpan(f"{prefix} ${abs(data['balance']):,.2f}", ft.TextStyle(weight=ft.FontWeight.BOLD,color="#ffd900"))
                     ],
                     size=14,
                 )   

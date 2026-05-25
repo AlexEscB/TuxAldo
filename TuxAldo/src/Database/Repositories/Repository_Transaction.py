@@ -89,7 +89,8 @@ class TransactionDao:
                     "date": day_date,
                     "incomes": incomes,
                     "expenses": expenses,
-                    "balance": incomes - expenses
+                    "balance": incomes - expenses,
+                    "type": "day"
                 }
                 days.append(info_day)
 

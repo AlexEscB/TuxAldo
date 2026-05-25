@@ -67,6 +67,7 @@ class MonthDao:
             info_month["title"] = row[1]
             info_month["date_start"] = row [2]
             info_month["month_id"] = row[0]
+            info_month["type"] = "month"
             months.append(info_month)
 
         return months

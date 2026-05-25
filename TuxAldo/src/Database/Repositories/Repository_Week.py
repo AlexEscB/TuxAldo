@@ -2,6 +2,7 @@ import sqlite3 as sql
 from config import DB_NAME
 from models.week import Week
 from .Repository_Transaction import TransactionDao
+from datetime import datetime
 
 class WeekDao:
 
@@ -35,6 +36,10 @@ class WeekDao:
                 info_week["title"] = "Semana " + str(week_number)
                 info_week["start_date"] = row[0]
                 info_week["end_date"] = row[1]
+                date_s = datetime.strptime(row[0], "%Y-%m-%d").strftime('%d/%m')
+                date_e = datetime.strptime(row[1], "%Y-%m-%d").strftime('%d/%m')      
+                info_week["display_date"] = date_s + " - " + date_e
+                info_week["type"] = "week"
                 week_number += 1
                 weeks.append(info_week)
 
