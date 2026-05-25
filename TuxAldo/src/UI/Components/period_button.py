@@ -1,11 +1,9 @@
 import flet as ft
-from models.day import Day
-from models.week import Week
-from models.Month import Month
 
 class PeriodButton(ft.Container):
-    def __init__(self, obj):
+    def __init__(self, data: dict):
         super().__init__()
+        self.data = data
         self.bgcolor = "#04002B"
         self.width = self.expand
         self.height = 50
@@ -21,20 +19,10 @@ class PeriodButton(ft.Container):
         self.content = ft.Row(
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             controls=[
-                ft.Text(obj.title, size=18, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
-                ft.Text(self._format_date(obj), size=12, color=ft.Colors.GREY_400)
+                ft.Text(self.data["title"], size=18, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
+                ft.Text(self.data["display_date"], size=12, color=ft.Colors.GREY_400)
             ]
         )
-
-    def _format_date(self, obj) -> str:
-        if isinstance(obj, Day):
-            return obj.date.strftime("%d/%m")
-        elif isinstance(obj, Week):
-            return f"{obj.start_date.strftime('%d/%m')} - {obj.end_date.strftime('%d/%m')}"
-        elif isinstance(obj, Month):
-            return obj.date.strftime("%Y")
-
-        return ""
-    
+        
     def on_click(self, e):
         pass

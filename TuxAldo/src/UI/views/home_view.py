@@ -9,24 +9,20 @@ from UI.Components.custom_side_bar import CustomBottomBar
 
 from UI.Components.period_button import PeriodButton
 
-from models.Month import Month
-from models.day import Day
-from models.week import Week
-
 
 class HomeView(ft.View):
-    def __init__(self,  page: ft.Page, obj1 : Day, obj2: Week, obj3: Month):
+    def __init__(self,  page: ft.Page, data1 : dict, data2: dict, data3: dict):
 
 
-        self.obj1 = obj1
-        self.obj2 = obj2
-        self.obj3 = obj3
+        self.data1 = data1
+        self.data2 = data2
+        self.data3 = data3
         self.bottom_bar = CustomBottomBar()
         self.period_buttons = ft.Column(
             controls=[
-                PeriodButton(obj1),
-                PeriodButton(obj2),
-                PeriodButton(obj3)
+                PeriodButton(data1),
+                PeriodButton(data2),
+                PeriodButton(data3)
             ],
             alignment=ft.MainAxisAlignment.CENTER,
             spacing=5
