@@ -1,9 +1,6 @@
 import flet as ft
 
-
-
-from UI.Components.UpperFrame import UpperFrame
-from UI.Components.ScrollableList import ScrollableCardList
+from controllers.home_controller import HomeController
 from UI.Components.custom_side_bar import CustomBottomBar
 
 
@@ -11,18 +8,18 @@ from UI.Components.period_button import PeriodButton
 
 
 class HomeView(ft.View):
-    def __init__(self,  page: ft.Page, data1 : dict, data2: dict, data3: dict):
+    def __init__(self, page: ft.Page):
 
 
-        self.data1 = data1
-        self.data2 = data2
-        self.data3 = data3
+        self.control = HomeController()
+        self.list_data = self.control.access_data()
         self.bottom_bar = CustomBottomBar()
         self.period_buttons = ft.Column(
             controls=[
-                PeriodButton(data1),
-                PeriodButton(data2),
-                PeriodButton(data3)
+                PeriodButton(self.list_data[0]),
+                PeriodButton(self.list_data[1]),
+                PeriodButton(self.list_data[2]),
+                PeriodButton(self.list_data[3])
             ],
             alignment=ft.MainAxisAlignment.CENTER,
             spacing=5

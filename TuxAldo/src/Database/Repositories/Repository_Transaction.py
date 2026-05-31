@@ -1,6 +1,7 @@
 import sqlite3 as sql
 from config import DB_NAME
 from models.Transaction import Transaction
+from datetime import datetime
 
 class TransactionDao:
 
@@ -82,6 +83,7 @@ class TransactionDao:
             days = []
 
             for row in rows:
+                date_s = datetime.strptime(row[0], "%Y-%m-%d").strftime('%d/%m')
                 day_date = row[0]
                 incomes  = row[1] or 0
                 expenses = row[2] or 0
@@ -90,6 +92,7 @@ class TransactionDao:
                     "incomes": incomes,
                     "expenses": expenses,
                     "balance": incomes - expenses,
+                    "display_date" : date_s,
                     "type": "day"
                 }
                 days.append(info_day)

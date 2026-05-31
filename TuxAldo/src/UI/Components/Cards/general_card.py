@@ -1,11 +1,15 @@
 import flet as ft
 
+from controllers.period_controller import PeriodController
+
 
 
 class GeneralCard(ft.Container):
-    def __init__(self, data: dict ):
+    def __init__(self, data: dict, page:ft.Page ):
         super().__init__()
         self.data = data
+        self.page = page
+        self.p_control = PeriodController(self.data,self.page)
         self.bgcolor = "#04002B"
         self.width = self.expand
         self.height = 120
@@ -80,6 +84,6 @@ class GeneralCard(ft.Container):
         )
 
     def on_click(self, e):
-        pass
+        self.p_control.load_period()
 
     

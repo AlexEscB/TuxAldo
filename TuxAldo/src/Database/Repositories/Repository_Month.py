@@ -1,10 +1,10 @@
 import sqlite3 as sql
 import calendar
 from datetime import datetime
+from utils.date_utils import get_month_name_es
 
 
 from config import DB_NAME
-from models.Month import Month
 from .Repository_Transaction import TransactionDao
 
 class MonthDao:
@@ -25,26 +25,7 @@ class MonthDao:
 
             return cursor.lastrowid
 
-    def get_months_by_year(self, year_id):
 
-        with sql.connect(DB_NAME) as conn:
-            cursor = conn.cursor()
-
-            cursor.execute('''
-                SELECT id, year_id, month_title, date_start
-                FROM months
-                WHERE year_id = ?
-            ''', (year_id,))
-
-            rows = cursor.fetchall()
-
-            months = []
-            for row in rows:
-                month = Month(id=row[0],title=row[2], date_start=row[3])
-                months.append(month)
-
-        return months
-    
     def get_month_summaries_by_year(self, year_id):
 
         with sql.connect(DB_NAME) as conn:
@@ -54,7 +35,7 @@ class MonthDao:
                 SELECT id, month_title, date_start
                 FROM months
                 WHERE year_id = ?
-            ''',(year_id))
+            ''',(year_id,))
 
         rows = cursor.fetchall()
         dao_transac = TransactionDao()
@@ -64,13 +45,44 @@ class MonthDao:
             last_day = calendar.monthrange(date_start.year, date_start.month)[1]
             end_date = f"{date_start.year}-{date_start.month}-{last_day}"
             info_month = dao_transac.get_transactions_in_range(date_start, end_date)
-            info_month["title"] = row[1]
+            info_month["title"] = get_month_name_es(row[1])
             info_month["date_start"] = row [2]
             info_month["month_id"] = row[0]
             info_month["type"] = "month"
+            info_month["display_date"] = datetime.strptime(row[0], "%Y-%m-%d").strftime("%m/%Y")
             months.append(info_month)
 
         return months
+    
+    def get_month_by_year(self, year_id,date):
+
+
+        with sql.connect(DB_NAME) as conn:
+
+            title_month = calendar.month_name[date.month]
+
+            cursor = conn.cursor()
+
+
+
+            cursor.execute('''
+                SELECT id, date_start
+                FROM months
+                WHERE year_id = ? AND month_title = ?
+            ''',(year_id, title_month))
+
+            rows = cursor.fetchone()
+
+            return {
+                "id" : rows[0],
+                "year_id" : year_id,
+                "title" : get_month_name_es(title_month),
+                "date_start" : rows[1],
+                "display_date" : datetime.strptime(rows[1], "%Y-%m-%d").strftime("%m/%Y")
+                
+
+
+            }
 
 
 

@@ -1,6 +1,6 @@
 import sqlite3 as sql
 from config import DB_NAME
-from models.week import Week
+
 from .Repository_Transaction import TransactionDao
 from datetime import datetime
 
@@ -44,6 +44,31 @@ class WeekDao:
                 weeks.append(info_week)
 
             return weeks
+        
+    def get_week_by_month(self, month_id, date):
+        with sql.connect(DB_NAME) as conn:      
+            cursor = conn.cursor()
+
+            cursor.execute('''
+                SELECT  id, start_date, end_date
+                FROM weeks
+                WHERE month_id = ? AND ? BETWEEN start_date AND end_date
+            ''', (month_id, date))
+
+            rows = cursor.fetchone()
+            date_s = datetime.strptime(rows[1], "%Y-%m-%d").strftime('%d/%m')
+            date_e = datetime.strptime(rows[2], "%Y-%m-%d").strftime('%d/%m')   
+
+            return {
+                "id" : rows[0],
+                "title" : "Semana Actual",
+                "month_id" : month_id,
+                "start_date" : rows[1],
+                "end_date" : rows[2],
+                "display_date" : date_s + " - " + date_e,
+                "type" : "week"
+            }
+
 
                 
 
@@ -57,4 +82,4 @@ class WeekDao:
         
     
         
-            
+        

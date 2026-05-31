@@ -1,7 +1,8 @@
 import sqlite3 as sql
+from config import DB_NAME
 
 from Database import database_connector
-from Database.database_connector import DatabaseConnector
+
 
 class YearDao:
 
@@ -44,4 +45,31 @@ class YearDao:
             years.append(year)
 
         return years
+    
+    def get_year_by_date(self, date):
+
+        year = str(date.year)
+
+
+        with sql.connect(DB_NAME) as conn:
+            cursor = conn.cursor()
+
+            cursor.execute('''
+                SELECT id
+                FROM years
+                WHERE year_number = ?
+            ''',(year,))
+
+        rows = cursor.fetchone()
+
+        return {
+            "id" : rows[0],
+            "year_number" : year,
+            "title": year,
+            "display_date" : year,
+            "type" : "year"
+
+
+
+        }
     

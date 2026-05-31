@@ -5,13 +5,16 @@ from UI.Components.ScrollableList import ScrollableCardList
 from UI.Components.custom_side_bar import CustomBottomBar
 from UI.Components.balance_frame import BalanceFrame 
 from UI.Components.Cards.general_card import GeneralCard
+from UI.Components.Cards.Transaction_Card import TransactionCard
 
 class PeriodView(ft.View):
-    def __init__(self,  page: ft.Page, data:dict):
+    def __init__(self,  page: ft.Page, data:dict, children : list):
 
         self.data = data
+        self.page = page
+        self.children = children
         self.upper_frame = UpperFrame(data)
-        self.transaction_list = ScrollableCardList(self.list_card_create(data))
+        self.transaction_list = ScrollableCardList(self.list_card_create())
         self.balance_frame = BalanceFrame(data)
         self.bottom_bar = CustomBottomBar()   
 
@@ -37,13 +40,22 @@ class PeriodView(ft.View):
             ]
         )
 
-    def list_card_create(self, data):
+    def list_card_create(self):
 
         cards = []
 
-        for d in data:
-            card = GeneralCard(d)
-            cards.append(card)
+        if self.data["type"] == "day":
+            for c in self.children:
+                card = TransactionCard(c)
+                cards.append(card)
+
+            
+
+        else:
+
+            for c in self.children:
+                card = GeneralCard(c, self.page)
+                cards.append(card)
 
         return cards
 
