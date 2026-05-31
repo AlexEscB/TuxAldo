@@ -4,6 +4,7 @@ from controllers.controller_create_mwd import ControllerCreateMWD
 from UI.views.home_view import HomeView
 from UI.views.period_view import PeriodView
 from UI.views.add_Transaccion import AddTransaccionView
+from controllers.period_controller import PeriodController
 
 async def main(page: ft.Page):
     page.title = "TuxAldo"
@@ -39,12 +40,28 @@ async def main(page: ft.Page):
 
         page.update()
 
+    #async def view_pop(e):
+        #if len(page.views) > 1:
+            #page.views.pop()
+            #page.update()
+
     async def view_pop(e):
         if len(page.views) > 1:
-            page.views.pop()
+            page.views.pop()  # cierra la vista actual
+            prev_view = page.views[-1]
+            if isinstance(prev_view, HomeView):
+                page.views.pop()
+                page.views.append(HomeView(page))
+            elif isinstance(prev_view, PeriodView):
+                
+                data = prev_view.data
+                page.views.pop()
+                PeriodController(data, page).load_period()
             page.update()
 
+
     page.on_route_change = route_change
+    page.on_view_pop = view_pop 
     page.views.append(HomeView(page))
     page.update()
 

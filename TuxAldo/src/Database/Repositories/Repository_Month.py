@@ -44,10 +44,10 @@ class MonthDao:
             date_start = datetime.strptime( row[2], "%Y-%m-%d")
             last_day = calendar.monthrange(date_start.year, date_start.month)[1]
             end_date = f"{date_start.year}-{date_start.month}-{last_day}"
-            info_month = dao_transac.get_transactions_in_range(date_start.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
+            info_month = dao_transac.get_transactions_in_range(date_start.strftime('%Y-%m-%d'), end_date)
             info_month["title"] = get_month_name_es(row[1])
             info_month["date_start"] = row [2]
-            info_month["month_id"] = row[0]
+            info_month["id"] = row[0]
             info_month["type"] = "month"
             info_month["display_date"] = datetime.strptime(row[2], "%Y-%m-%d").strftime("%m/%Y")
             months.append(info_month)

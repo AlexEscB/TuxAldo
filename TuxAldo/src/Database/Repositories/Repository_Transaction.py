@@ -2,6 +2,7 @@ import sqlite3 as sql
 from config import DB_NAME
 from models.Transaction import Transaction
 from datetime import datetime
+from utils.date_utils import get_day_name_es
 
 class TransactionDao:
 
@@ -84,10 +85,12 @@ class TransactionDao:
 
             for row in rows:
                 date_s = datetime.strptime(row[0], "%Y-%m-%d").strftime('%d/%m')
-                day_date = row[0]
+                
+                day_date = datetime.strptime(row[0], "%Y-%m-%d")
                 incomes  = row[1] or 0
                 expenses = row[2] or 0
                 info_day = {
+                    "title" : get_day_name_es(day_date),
                     "date": day_date,
                     "incomes": incomes,
                     "expenses": expenses,
