@@ -51,12 +51,14 @@ class CustomBuPrincipal(ft.Container):
 
 
 class ButtonAddTracs(ft.Container):
-    def __init__(self, on_clic=None):
+    def __init__(self, on_click=None):
         super().__init__()
+        self.on_click = on_click
         self.bgcolor = "#ffd900"
-        self.width = 20
-        self.height = 20
-        self.border_radius = 10
+        self.width = 50
+        self.height = 50
+        self.border_radius = 25
+        self.alignment = ft.Alignment(0,0)
         self.padding = 10
         self.margin = ft.Margin.only(bottom=10)
         self.border = ft.Border.all(1, "#1B263B")
@@ -67,5 +69,9 @@ class ButtonAddTracs(ft.Container):
             offset=ft.Offset(0, 2),
         )
         
+        self.content = ft.Icon(ft.Icons.ADD, color=ft.Colors.BLACK)
+
+        
+
     
 

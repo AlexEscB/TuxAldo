@@ -2,7 +2,9 @@ from datetime import datetime
 from Database.Repositories.Repository_Month import MonthDao
 from Database.Repositories.Repository_Year import YearDao
 from Database.Repositories.Repository_Week import WeekDao
+from Database.Repositories.Repository_Transaction import TransactionDao
 from utils.date_utils import get_day_name_es
+
 
 
 class HomeController:
@@ -13,6 +15,9 @@ class HomeController:
         self.week_dao = WeekDao()
         self.list_data = []
         self.display_date_day = self.date.strftime('%d/%m')
+        self.day_str = self.date.strftime('%Y-%m-%d')
+        self.t_dao = TransactionDao()
+        self.day_values = self.t_dao.get_transactions_in_range(self.day_str, self.day_str)
 
 
 
@@ -24,7 +29,11 @@ class HomeController:
             "title" : get_day_name_es(self.date),
             "date"  : self.date,
             "display_date" : self.display_date_day,
-            "type" : "day"
+            "type" : "day",
+            "balance" : self.day_values["balance"],
+            "incomes" : self.day_values["incomes"],
+            "expenses" : self.day_values["expenses"]
+
             
             }
 

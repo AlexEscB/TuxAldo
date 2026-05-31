@@ -1,8 +1,10 @@
-
 import flet as ft
+
 from datetime import datetime
 from models.Transaction import Transaction
 from Database.Repositories.Repository_Transaction import TransactionDao
+from controllers.home_controller import HomeController
+from controllers.period_controller import PeriodController
 
 class AddTransactionController():
     def __init__(self, view):
@@ -49,6 +51,17 @@ class AddTransactionController():
 
         print("Transacción guardada")
         self._show_message("Transacción guardada correctamente")
+        self._view.page.views.pop()
+        self._view.page.views.pop()
+        self._view.page.update()
+
+        home = HomeController()
+        data = home.access_data()
+        day_data = data[3]  # el día es el cuarto elemento
+
+        PeriodController(day_data, self._view.page).load_period()
+
+
 
     def on_cancel(self, e):
         self._view.page.views.pop()

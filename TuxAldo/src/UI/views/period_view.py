@@ -6,12 +6,13 @@ from UI.Components.custom_side_bar import CustomBottomBar
 from UI.Components.balance_frame import BalanceFrame 
 from UI.Components.Cards.general_card import GeneralCard
 from UI.Components.Cards.Transaction_Card import TransactionCard
+from UI.Components.CustomButton2 import ButtonAddTracs
 
 class PeriodView(ft.View):
     def __init__(self,  page: ft.Page, data:dict, children : list):
 
         self.data = data
-        self.page = page
+        self._page = page
         self.children = children
         self.upper_frame = UpperFrame(data)
         self.transaction_list = ScrollableCardList(self.list_card_create())
@@ -41,20 +42,28 @@ class PeriodView(ft.View):
         )
 
     def list_card_create(self):
-
+        from controllers.period_controller import PeriodController
         cards = []
 
         if self.data["type"] == "day":
             for c in self.children:
                 card = TransactionCard(c)
                 cards.append(card)
+            from UI.views.add_Transaccion import AddTransaccionView
+            cards.append(ft.Row(
+                controls=[
+                
+                ButtonAddTracs(
+                on_click=lambda e: (self._page.views.append(AddTransaccionView(self._page)), self._page.update()))],
+                alignment=ft.MainAxisAlignment.CENTER
+            ))
 
             
 
         else:
 
             for c in self.children:
-                card = GeneralCard(c, self.page)
+                card = GeneralCard(c, self._page, on_click=lambda e, c=c: PeriodController(c, self._page).load_period())
                 cards.append(card)
 
         return cards

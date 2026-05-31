@@ -1,50 +1,48 @@
 import sqlite3 as sql
 from config import DB_NAME
-
-from Database import database_connector
+from .Repository_Transaction import TransactionDao
 
 
 class YearDao:
 
-    def __init__(self):
-
-        self.db = database_connector.DatabaseConnector()
 
 
     def save_year(self, year_number):
 
-        cursor = self.db.cursor
+        with sql.connect(DB_NAME) as conn:
 
-        cursor.execute('''
-            INSERT INTO years (year_number)
-            VALUES (?)
-        ''', (year_number,))
+            cursor = conn.cursor()
 
-        self.db.conn.commit()
+            cursor.execute('''
+                INSERT OR IGNORE INTO years (year_number)
+                VALUES (?)
+            ''', (year_number,))
 
-        return cursor.lastrowid
+            return cursor.lastrowid
 
     def get_all_years(self):
 
-        cursor = self.db.cursor
+        with sql.connect(DB_NAME) as conn:
 
-        cursor.execute('''
-            SELECT id, year_number
-            FROM years
-            ORDER BY year_number ASC
-        ''')
+            cursor = conn.cursor()
 
-        rows = cursor.fetchall()
+            cursor.execute('''
+                SELECT id, year_number
+                FROM years
+                ORDER BY year_number ASC
+            ''')
 
-        years = []
-        for row in rows:
-            year = {
-                'id': row[0],
-                'year_number': row[1]
-            }
-            years.append(year)
+            rows = cursor.fetchall()
 
-        return years
+            years = []
+            for row in rows:
+                year = {
+                    'id': row[0],
+                    'year_number': row[1]
+                }
+                years.append(year)
+
+            return years
     
     def get_year_by_date(self, date):
 
@@ -61,13 +59,20 @@ class YearDao:
             ''',(year,))
 
         rows = cursor.fetchone()
+        start = f"{date.year}-01-01"
+        end   = f"{date.year}-12-31"
+        t_dao = TransactionDao()
+        values = t_dao.get_transactions_in_range(start, date)
 
         return {
             "id" : rows[0],
             "year_number" : year,
             "title": year,
             "display_date" : year,
-            "type" : "year"
+            "type" : "year",
+            "balance" : values["balance"],
+            "incomes" : values["incomes"],
+            "expenses" : values["expenses"]
 
 
 

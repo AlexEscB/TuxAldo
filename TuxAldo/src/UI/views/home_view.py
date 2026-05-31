@@ -10,16 +10,16 @@ from UI.Components.period_button import PeriodButton
 class HomeView(ft.View):
     def __init__(self, page: ft.Page):
 
-
+        self._page = page
         self.control = HomeController()
         self.list_data = self.control.access_data()
         self.bottom_bar = CustomBottomBar()
         self.period_buttons = ft.Column(
             controls=[
-                PeriodButton(self.list_data[0]),
-                PeriodButton(self.list_data[1]),
-                PeriodButton(self.list_data[2]),
-                PeriodButton(self.list_data[3])
+                PeriodButton(self.list_data[0], self._page),
+                PeriodButton(self.list_data[1], self._page),
+                PeriodButton(self.list_data[2], self._page),
+                PeriodButton(self.list_data[3], self._page)
             ],
             alignment=ft.MainAxisAlignment.CENTER,
             spacing=5

@@ -44,12 +44,12 @@ class MonthDao:
             date_start = datetime.strptime( row[2], "%Y-%m-%d")
             last_day = calendar.monthrange(date_start.year, date_start.month)[1]
             end_date = f"{date_start.year}-{date_start.month}-{last_day}"
-            info_month = dao_transac.get_transactions_in_range(date_start, end_date)
+            info_month = dao_transac.get_transactions_in_range(date_start.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
             info_month["title"] = get_month_name_es(row[1])
             info_month["date_start"] = row [2]
             info_month["month_id"] = row[0]
             info_month["type"] = "month"
-            info_month["display_date"] = datetime.strptime(row[0], "%Y-%m-%d").strftime("%m/%Y")
+            info_month["display_date"] = datetime.strptime(row[2], "%Y-%m-%d").strftime("%m/%Y")
             months.append(info_month)
 
         return months
@@ -72,13 +72,23 @@ class MonthDao:
             ''',(year_id, title_month))
 
             rows = cursor.fetchone()
+            date_start = datetime.strptime( rows[1], "%Y-%m-%d")
+            last_day = calendar.monthrange(date_start.year, date_start.month)[1]
+            end_date = f"{date_start.year}-{date_start.month}-{last_day}"
+            t_dao = TransactionDao()
+
+            values = t_dao.get_transactions_in_range(date_start, end_date)
 
             return {
                 "id" : rows[0],
                 "year_id" : year_id,
                 "title" : get_month_name_es(title_month),
                 "date_start" : rows[1],
-                "display_date" : datetime.strptime(rows[1], "%Y-%m-%d").strftime("%m/%Y")
+                "display_date" : datetime.strptime(rows[1], "%Y-%m-%d").strftime("%m/%Y"),
+                "type" : "month",
+                "balance" : values["balance"],
+                "incomes" : values["incomes"],
+                "expenses" : values["expenses"]
                 
 
 

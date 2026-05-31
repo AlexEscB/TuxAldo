@@ -4,9 +4,9 @@ from controllers.period_controller import PeriodController
 class PeriodButton(ft.Container):
     def __init__(self, data: dict, page: ft.Page):
         super().__init__()
-        self.page = page
+        self._page = page
         self.data = data
-        self.p_control = PeriodController(self.data, self.page)
+        self.on_click = self._navigate
         self.bgcolor = "#04002B"
         self.width = self.expand
         self.height = 50
@@ -27,5 +27,8 @@ class PeriodButton(ft.Container):
             ]
         )
         
-    def on_click(self, e):
-        self.p_control.load_period()
+    
+
+    def _navigate(self, e):
+        from controllers.period_controller import PeriodController
+        PeriodController(self.data, self._page).load_period()

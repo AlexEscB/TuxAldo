@@ -53,11 +53,15 @@ class WeekDao:
                 SELECT  id, start_date, end_date
                 FROM weeks
                 WHERE month_id = ? AND ? BETWEEN start_date AND end_date
-            ''', (month_id, date))
+            ''', (month_id, date.strftime('%Y-%m-%d')))
 
             rows = cursor.fetchone()
             date_s = datetime.strptime(rows[1], "%Y-%m-%d").strftime('%d/%m')
             date_e = datetime.strptime(rows[2], "%Y-%m-%d").strftime('%d/%m')   
+
+            t_dao = TransactionDao()
+
+            values = t_dao.get_transactions_in_range(rows[1], rows[2])
 
             return {
                 "id" : rows[0],
@@ -66,7 +70,11 @@ class WeekDao:
                 "start_date" : rows[1],
                 "end_date" : rows[2],
                 "display_date" : date_s + " - " + date_e,
-                "type" : "week"
+                "type" : "week",
+                "balance" : values["balance"],
+                "incomes" : values["incomes"],
+                "expenses" : values["expenses"]
+
             }
 
 
