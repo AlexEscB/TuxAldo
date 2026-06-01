@@ -18,8 +18,8 @@ class TransactionCard(ft.Container):
         )
 
         # Definimos el color según el tipo
-        amount_color = ft.Colors.GREEN_ACCENT_400 if transaction_obj.type == 'income' else ft.Colors.RED_ACCENT_400
-        prefix = "+" if transaction_obj.type == 'income' else "-"
+        amount_color = ft.Colors.GREEN_ACCENT_400 if transaction_obj.type == 'Ingreso' or transaction_obj.type == "Income" else ft.Colors.RED_ACCENT_400
+        prefix = "+" if transaction_obj.type == 'income' or transaction_obj.type == "Ingreso" else "-"
 
         self.content = ft.Column(
             controls=[
