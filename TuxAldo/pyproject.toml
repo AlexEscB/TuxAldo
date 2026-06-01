@@ -19,10 +19,12 @@ dev = [
 ]
 
 [tool.flet]
-org = "com.mycompany"
+org = "com.alexescb"
 product = "TuxAldo"
-company = "Flet"
-copyright = "Copyright (C) 2023-2026 by Flet"
+company = "Alejandro Escobar Barrios"
+copyright = "Copyright (C) 2026 by Alejandro Escobar Barrios"
 
 [tool.flet.app]
 path = "src"
+icon = "assets/icon.png"
+splash = "assets/icon.png"
