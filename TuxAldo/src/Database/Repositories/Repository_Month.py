@@ -37,22 +37,22 @@ class MonthDao:
                 WHERE year_id = ?
             ''',(year_id,))
 
-        rows = cursor.fetchall()
-        dao_transac = TransactionDao()
-        months = []
-        for row in rows:
-            date_start = datetime.strptime( row[2], "%Y-%m-%d")
-            last_day = calendar.monthrange(date_start.year, date_start.month)[1]
-            end_date = f"{date_start.year}-{date_start.month}-{last_day}"
-            info_month = dao_transac.get_transactions_in_range(row[2], end_date)
-            info_month["title"] = get_month_name_es(row[1])
-            info_month["date_start"] = row [2]
-            info_month["id"] = row[0]
-            info_month["type"] = "month"
-            info_month["display_date"] = datetime.strptime(row[2], "%Y-%m-%d").strftime("%m/%Y")
-            months.append(info_month)
+            rows = cursor.fetchall()
+            dao_transac = TransactionDao()
+            months = []
+            for row in rows:
+                date_start = datetime.strptime( row[2], "%Y-%m-%d")
+                last_day = calendar.monthrange(date_start.year, date_start.month)[1]
+                end_date = date_start.replace(day=last_day).strftime("%Y-%m-%d")
+                info_month = dao_transac.get_transactions_in_range(row[2], end_date)
+                info_month["title"] = get_month_name_es(row[1])
+                info_month["date_start"] = row [2]
+                info_month["id"] = row[0]
+                info_month["type"] = "month"
+                info_month["display_date"] = datetime.strptime(row[2], "%Y-%m-%d").strftime("%m/%Y")
+                months.append(info_month)
 
-        return months
+            return months
     
     def get_month_by_year(self, year_id,date):
 

@@ -58,23 +58,21 @@ class YearDao:
                 WHERE year_number = ?
             ''',(year,))
 
-        rows = cursor.fetchone()
-        start = f"{date.year}-01-01"
-        end   = f"{date.year}-12-31"
-        t_dao = TransactionDao()
-        values = t_dao.get_transactions_in_range(start, date)
+            rows = cursor.fetchone()
+            start = f"{date.year}-01-01"
+            end   = f"{date.year}-12-31"
+            t_dao = TransactionDao()
+            values = t_dao.get_transactions_in_range(start, date)
 
-        return {
-            "id" : rows[0],
-            "year_number" : year,
-            "title": year,
-            "display_date" : year,
-            "type" : "year",
-            "balance" : values["balance"],
-            "incomes" : values["incomes"],
-            "expenses" : values["expenses"]
+            return {
+                "id" : rows[0],
+                "year_number" : year,
+                "title": year,
+                "display_date" : year,
+                "type" : "year",
+                "balance" : values["balance"],
+                "incomes" : values["incomes"],
+                "expenses" : values["expenses"]
 
-
-
-        }
+            }
     
