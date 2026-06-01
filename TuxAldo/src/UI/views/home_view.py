@@ -3,7 +3,6 @@ import flet as ft
 from controllers.home_controller import HomeController
 from UI.Components.custom_side_bar import CustomBottomBar
 
-from utils.update_checker import check_for_update
 from UI.Components.period_button import PeriodButton
 
 

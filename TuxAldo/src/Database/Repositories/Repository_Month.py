@@ -18,7 +18,7 @@ class MonthDao:
             cursor = conn.cursor()
 
             cursor.execute('''
-                INSERT INTO months (year_id, month_title, date_start)
+                INSERT OR IGNORE INTO months (year_id, month_title, date_start)
                 VALUES (?, ?, ?)
             ''', (year_id, month_title, month_date))
 
@@ -44,7 +44,7 @@ class MonthDao:
             date_start = datetime.strptime( row[2], "%Y-%m-%d")
             last_day = calendar.monthrange(date_start.year, date_start.month)[1]
             end_date = f"{date_start.year}-{date_start.month}-{last_day}"
-            info_month = dao_transac.get_transactions_in_range(date_start.strftime('%Y-%m-%d'), end_date)
+            info_month = dao_transac.get_transactions_in_range(row[2], end_date)
             info_month["title"] = get_month_name_es(row[1])
             info_month["date_start"] = row [2]
             info_month["id"] = row[0]
@@ -77,7 +77,7 @@ class MonthDao:
             end_date = f"{date_start.year}-{date_start.month}-{last_day}"
             t_dao = TransactionDao()
 
-            values = t_dao.get_transactions_in_range(date_start, end_date)
+            values = t_dao.get_transactions_in_range(date_start.strftime("%Y-%m-%d"), end_date)
 
             return {
                 "id" : rows[0],

@@ -22,7 +22,7 @@ class DatabaseConnector:
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     year_id INTEGER NOT NULL,
                     month_title TEXT NOT NULL,
-                    date_start TEXT NOT NULL,
+                    date_start TEXT NOT NULL UNIQUE,
                     FOREIGN KEY (year_id) REFERENCES years (id) ON DELETE CASCADE
                 )
             ''')
@@ -30,8 +30,8 @@ class DatabaseConnector:
                 CREATE TABLE IF NOT EXISTS weeks (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     month_id INTEGER NOT NULL,
-                    start_date TEXT NOT NULL,
-                    end_date TEXT NOT NULL,
+                    start_date TEXT NOT NULL UNIQUE,
+                    end_date TEXT NOT NULL UNIQUE,
                     FOREIGN KEY (month_id) REFERENCES months (id) ON DELETE CASCADE
                 )
             ''')

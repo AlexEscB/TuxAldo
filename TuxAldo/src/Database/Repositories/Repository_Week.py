@@ -11,7 +11,7 @@ class WeekDao:
             cursor = conn.cursor()
 
             cursor.execute('''
-                INSERT INTO weeks (month_id, start_date, end_date)
+                INSERT OR IGNORE INTO weeks (month_id, start_date, end_date)
                 VALUES (?, ?, ?)
             ''', (month_id, start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d')))
 

@@ -58,10 +58,11 @@ class TransactionDao:
             rows = cursor.fetchone()
             incomes  = rows[0] or 0
             expenses = rows[1] or 0
+            balace = incomes - expenses
             return {
                 "incomes": incomes,
                 "expenses": expenses,
-                "balance": incomes - expenses
+                "balance": balace
             }
         
     def get_day_summaries_by_week(self, start_date, end_date):
