@@ -1,6 +1,5 @@
 import sqlite3 as sql
-
-DB_NAME = 'kakebo.db'
+from config import DB_NAME
 
 class DatabaseConnector:
 
