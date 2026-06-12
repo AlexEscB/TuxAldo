@@ -28,3 +28,5 @@ def _get_db_path() -> str:
     return os.path.join(base, "kakebo.db")
 
 DB_NAME = _get_db_path()
+
+needs_refresh = False

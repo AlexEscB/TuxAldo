@@ -17,14 +17,21 @@ class PeriodView(ft.View):
         self.upper_frame = UpperFrame(data)
         self.transaction_list = ScrollableCardList(self.list_card_create())
         self.balance_frame = BalanceFrame(data)
-        self.bottom_bar = CustomBottomBar()   
+        self.bottom_bar = CustomBottomBar()
+          
 
         
         super().__init__(
-            route="/Period",
+            route=f"/period/{data['type']}",
             bgcolor="#00021d",
             padding= ft.Padding.only(top=30,left=5,right=5, bottom=10),
             navigation_bar=self.bottom_bar,
+            appbar=ft.AppBar(
+                leading=ft.IconButton(
+                    icon=ft.Icons.ARROW_BACK,
+                    on_click=lambda e: (page.views.pop(), page.update())
+                )
+            ),
             controls=[ft.Column(
                 controls=[
                     

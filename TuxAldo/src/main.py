@@ -1,5 +1,6 @@
 import flet as ft
 import asyncio
+import config
 
 from Database.database_connector import DatabaseConnector
 from controllers.controller_create_mwd import ControllerCreateMWD
@@ -20,28 +21,19 @@ async def main(page: ft.Page):
     DatabaseConnector().create_tables()
     ControllerCreateMWD().create_year()
 
-    async def route_change(e=None):
-        page.views.clear()
-        route = page.route
-
-        if route == "/" or route == "":
-            page.views.append(HomeView(page))
-
-        elif route.startswith("/period/month/"):
-            month_id = int(route.split("/")[-1])
-            page.views.append(PeriodView(page, period_type="month", period_id=month_id))
-
-        elif route.startswith("/period/week/"):
-            week_id = int(route.split("/")[-1])
-            page.views.append(PeriodView(page, period_type="week", period_id=week_id))
-
-        elif route.startswith("/period/day/"):
-            date = route.split("/")[-1]  # "2026-05-22"
-            page.views.append(PeriodView(page, period_type="day", period_id=date))
-
-        elif route == "/add_transaccion":
-            page.views.append(AddTransaccionView(page))
-
+    def route_change(e):
+        if page.route == "/":
+            return
+        if config.needs_refresh:
+            config.needs_refresh = False
+            prev_view = page.views[-1]
+            if isinstance(prev_view, HomeView):
+                page.views.pop()
+                page.views.append(HomeView(page))
+            elif isinstance(prev_view, PeriodView):
+                data = prev_view.data
+                page.views.pop()
+                PeriodController(data, page).load_period()
         page.update()
 
     #async def view_pop(e):
@@ -49,23 +41,12 @@ async def main(page: ft.Page):
             #page.views.pop()
             #page.update()
 
-    _nav_lock = asyncio.Lock()
-
     async def view_pop(e):
-        if _nav_lock.locked():
+        if len(page.views) <= 1:
             return
-        async with _nav_lock:
-            if len(page.views) > 1:
-                page.views.pop()
-                prev_view = page.views[-1]
-                if isinstance(prev_view, HomeView):
-                    page.views.pop()
-                    page.views.append(HomeView(page))
-                elif isinstance(prev_view, PeriodView):
-                    data = prev_view.data
-                    page.views.pop()
-                    PeriodController(data, page).load_period()
-                page.update()
+        page.views.pop()
+        if page.views:
+            page.go(page.views[-1].route)
 
     async def check_updates_async():
         result = check_for_update()
@@ -84,7 +65,8 @@ async def main(page: ft.Page):
 
 
     page.on_route_change = route_change
-    page.on_view_pop = view_pop 
+    page.on_view_pop = view_pop
+    page.on_back_press = view_pop
     page.views.append(HomeView(page))
     page.update()
     page.run_task(check_updates_async)
