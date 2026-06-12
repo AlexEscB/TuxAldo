@@ -39,12 +39,6 @@ class AddTransaccionView(ft.View):
             route="/add_transaccion",
             bgcolor="#00021d",
             navigation_bar=self.bottom_bar,
-            appbar=ft.AppBar(
-                leading=ft.IconButton(
-                    icon=ft.Icons.ARROW_BACK,
-                    on_click=self.controller.on_cancel
-                )
-            ),
             padding=ft.Padding.only(top=30, left=10, right=10, bottom=10),
             controls=[
                 ft.Column(
