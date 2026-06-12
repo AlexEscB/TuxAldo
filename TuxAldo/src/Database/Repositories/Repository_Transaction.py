@@ -102,4 +102,10 @@ class TransactionDao:
                 days.append(info_day)
 
             return days
+        
+    def delete_transaction(self, transaction_id):
+        with sql.connect(DB_NAME) as conn:
+            cursor = conn.cursor()
+            cursor.execute('DELETE FROM transactions WHERE id = ?', (transaction_id,))
+            return cursor.rowcount > 0
             

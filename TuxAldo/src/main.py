@@ -49,19 +49,23 @@ async def main(page: ft.Page):
             #page.views.pop()
             #page.update()
 
+    _nav_lock = asyncio.Lock()
+
     async def view_pop(e):
-        if len(page.views) > 1:
-            page.views.pop()  # cierra la vista actual
-            prev_view = page.views[-1]
-            if isinstance(prev_view, HomeView):
+        if _nav_lock.locked():
+            return
+        async with _nav_lock:
+            if len(page.views) > 1:
                 page.views.pop()
-                page.views.append(HomeView(page))
-            elif isinstance(prev_view, PeriodView):
-                
-                data = prev_view.data
-                page.views.pop()
-                PeriodController(data, page).load_period()
-            page.update()
+                prev_view = page.views[-1]
+                if isinstance(prev_view, HomeView):
+                    page.views.pop()
+                    page.views.append(HomeView(page))
+                elif isinstance(prev_view, PeriodView):
+                    data = prev_view.data
+                    page.views.pop()
+                    PeriodController(data, page).load_period()
+                page.update()
 
     async def check_updates_async():
         result = check_for_update()
