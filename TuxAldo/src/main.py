@@ -1,7 +1,6 @@
 import flet as ft
 import asyncio
 import config
-
 from Database.database_connector import DatabaseConnector
 from controllers.controller_create_mwd import ControllerCreateMWD
 from UI.views.home_view import HomeView
@@ -10,13 +9,19 @@ from UI.views.add_Transaccion import AddTransaccionView
 from controllers.period_controller import PeriodController
 from utils.update_checker import check_for_update
 
+
 async def main(page: ft.Page):
     page.title = "TuxAldo"
     page.theme_mode = ft.ThemeMode.DARK
+    page.theme = ft.Theme(
+        popup_menu_theme=ft.PopupMenuTheme(
+            color="#04002B",
+            shadow_color=ft.Colors.with_opacity(0.2, ft.Colors.BLACK),
+            shape=ft.RoundedRectangleBorder(radius=10),
+        )
+    )
     page.bgcolor = "#00021d"
     page.padding = 0
-
-    
 
     DatabaseConnector().create_tables()
     ControllerCreateMWD().create_year()
@@ -31,22 +36,18 @@ async def main(page: ft.Page):
                 page.views.pop()
                 page.views.append(HomeView(page))
             elif isinstance(prev_view, PeriodView):
-                data = prev_view.data
+                # Antes: prev_view.data (chocaba con el atributo interno de ft.View)
+                period_data = prev_view.period_data
                 page.views.pop()
-                PeriodController(data, page).load_period()
+                PeriodController(period_data, page).load_period()
         page.update()
-
-    #async def view_pop(e):
-        #if len(page.views) > 1:
-            #page.views.pop()
-            #page.update()
 
     async def view_pop(e):
         if len(page.views) <= 1:
             return
         page.views.pop()
         if page.views:
-            page.go(page.views[-1].route)
+            await page.push_route(page.views[-1].route)
 
     async def check_updates_async():
         result = check_for_update()
@@ -62,7 +63,6 @@ async def main(page: ft.Page):
                 )
                 page.overlay.append(snack)
                 page.update()
-
 
     page.on_route_change = route_change
     page.on_view_pop = view_pop

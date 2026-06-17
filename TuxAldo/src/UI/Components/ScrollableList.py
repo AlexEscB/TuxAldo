@@ -37,3 +37,8 @@ class ScrollableCardList(ft.Container):
     def replace_cards(self, new_cards: List[ft.Container]):
         self.scroll_area.controls = new_cards
         self.scroll_area.update()
+
+    def remove_card(self, card: ft.Container):
+        if card in self.scroll_area.controls:
+            self.scroll_area.controls.remove(card)
+            self.scroll_area.update()

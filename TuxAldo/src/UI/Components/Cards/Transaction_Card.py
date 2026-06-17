@@ -1,8 +1,11 @@
 import flet as ft
 from models.Transaction import Transaction
+from UI.Components.context_menu_custom import ContextMenuCustom
 
 class TransactionCard(ft.Container):
-    def __init__(self, transaction_obj: Transaction):
+    def __init__(self, transaction_obj: Transaction, on_edit=None, on_delete=None):
+
+        self.transaction = transaction_obj
         super().__init__()
         self.bgcolor = "#04002B"
         self.width = self.expand
@@ -18,31 +21,31 @@ class TransactionCard(ft.Container):
         )
 
         # Definimos el color según el tipo
-        amount_color = ft.Colors.GREEN_ACCENT_400 if transaction_obj.type == 'Ingreso' or transaction_obj.type == "Income" else ft.Colors.RED_ACCENT_400
-        prefix = "+" if transaction_obj.type == 'income' or transaction_obj.type == "Ingreso" else "-"
+        amount_color = ft.Colors.GREEN_ACCENT_400 if self.transaction.type == 'Ingreso' or self.transaction.type == "Income" else ft.Colors.RED_ACCENT_400
+        prefix = "+" if self.transaction.type == 'income' or self.transaction.type == "Ingreso" else "-"
 
-        self.content = ft.Column(
+        card_content = ft.Column(
             controls=[
                 ft.Row(
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     controls=[
 
 
-                        ft.Text(transaction_obj.title, size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
-                        ft.Text(transaction_obj.category, size=10, color=ft.Colors.GREY_400),
+                        ft.Text(self.transaction.title, size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
+                        ft.Text(self.transaction.category, size=10, color=ft.Colors.GREY_400),
 
                     ]
 
                 ),
                 
-                ft.Text(transaction_obj.description, size=12, color=ft.Colors.GREY_400),
+                ft.Text(self.transaction.description, size=12, color=ft.Colors.GREY_400),
 
                 ft.Row(
                     alignment=ft.MainAxisAlignment.END,
                     controls=[
 
                         ft.Text(
-                            f"{prefix} ${transaction_obj.value:,.2f}", 
+                            f"{prefix} ${self.transaction.value:,.2f}", 
                             size=18, 
                             weight=ft.FontWeight.W_600, 
                             color=amount_color,
@@ -56,5 +59,13 @@ class TransactionCard(ft.Container):
                 )
 
                 
+            ]
+        )
+
+        self.content = ContextMenuCustom(
+            content=card_content,
+            items=[
+                ("Editar", lambda e: on_edit(self.transaction) if on_edit else None),
+                ("Eliminar", lambda e: on_delete(self.transaction) if on_delete else None),
             ]
         )

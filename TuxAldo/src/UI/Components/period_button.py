@@ -1,11 +1,11 @@
 import flet as ft
-
 from controllers.period_controller import PeriodController
+
 class PeriodButton(ft.Container):
     def __init__(self, data: dict, page: ft.Page):
         super().__init__()
         self._page = page
-        self.data = data
+        self.period_data = data
         self.on_click = self._navigate
         self.bgcolor = "#04002B"
         self.width = self.expand
@@ -22,13 +22,11 @@ class PeriodButton(ft.Container):
         self.content = ft.Row(
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             controls=[
-                ft.Text(self.data["title"], size=18, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
-                ft.Text(self.data["display_date"], size=12, color=ft.Colors.GREY_400)
+                ft.Text(self.period_data["title"], size=18, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
+                ft.Text(self.period_data["display_date"], size=12, color=ft.Colors.GREY_400)
             ]
         )
-        
-    
 
     def _navigate(self, e):
         from controllers.period_controller import PeriodController
-        PeriodController(self.data, self._page).load_period()
+        PeriodController(self.period_data, self._page).load_period()

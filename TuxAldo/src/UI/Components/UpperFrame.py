@@ -1,11 +1,9 @@
 import flet as ft
 
-
-
 class UpperFrame(ft.Container):
     def __init__(self, data: dict):
         super().__init__()
-        self.data = data
+        self.frame_data = data
         self.bgcolor = "#04002B"
         self.width = self.expand
         self.height = 50
@@ -21,7 +19,7 @@ class UpperFrame(ft.Container):
         self.content = ft.Row(
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             controls=[
-                ft.Text(self.data["title"], size=18, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
-                ft.Text(self.data["display_date"], size=12, color=ft.Colors.GREY_400)
+                ft.Text(self.frame_data["title"], size=18, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
+                ft.Text(self.frame_data["display_date"], size=12, color=ft.Colors.GREY_400)
             ]
         )
