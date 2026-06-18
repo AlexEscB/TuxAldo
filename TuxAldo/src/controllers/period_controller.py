@@ -25,19 +25,39 @@ class PeriodController():
             self.load_day()
 
     def load_year(self):
+        year = self.data["year_number"]
+        balance_data = self.t_dao.get_transactions_in_range(
+            f"{year}-01-01", f"{year}-12-31"
+        )
+        self.data["incomes"] = balance_data["incomes"]
+        self.data["expenses"] = balance_data["expenses"]
+        self.data["balance"] = balance_data["balance"]
+
         data_year = self.m_dao.get_month_summaries_by_year(self.data["id"])
         new_view = PeriodView(self.page, self.data, data_year)
         self.page.views.append(new_view)
         self.page.update()
     
     def load_month(self):
+        balance_data = self.m_dao.get_month_balance(self.data["date_start"])
+        self.data["incomes"] = balance_data["incomes"]
+        self.data["expenses"] = balance_data["expenses"]
+        self.data["balance"] = balance_data["balance"]
+
         data_month = self.w_dao.get_weeks_by_month(self.data["id"])
         new_view = PeriodView(self.page, self.data, data_month)
         self.page.views.append(new_view)
         self.page.update()
     
     def load_week(self):
-        data_week = self.t_dao.get_day_summaries_by_week(self.data["start_date"],self.data["end_date"])
+        balance_data = self.t_dao.get_transactions_in_range(
+            self.data["start_date"], self.data["end_date"]
+        )
+        self.data["incomes"] = balance_data["incomes"]
+        self.data["expenses"] = balance_data["expenses"]
+        self.data["balance"] = balance_data["balance"]
+
+        data_week = self.t_dao.get_day_summaries_by_week(self.data["start_date"], self.data["end_date"])
         new_view = PeriodView(self.page, self.data, data_week)
         self.page.views.append(new_view)
         self.page.update()

@@ -93,6 +93,14 @@ class MonthDao:
 
 
             }
+        
+    def get_month_balance(self, date_start):
+        date_start_obj = datetime.strptime(date_start, "%Y-%m-%d")
+        last_day = calendar.monthrange(date_start_obj.year, date_start_obj.month)[1]
+        end_date = date_start_obj.replace(day=last_day).strftime("%Y-%m-%d")
+
+        t_dao = TransactionDao()
+        return t_dao.get_transactions_in_range(date_start, end_date)
 
 
 
