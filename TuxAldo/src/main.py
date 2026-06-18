@@ -28,15 +28,14 @@ async def main(page: ft.Page):
 
     def route_change(e):
         if page.route == "/":
+            config.needs_refresh = False
             return
         if config.needs_refresh:
-            config.needs_refresh = False
             prev_view = page.views[-1]
             if isinstance(prev_view, HomeView):
                 page.views.pop()
                 page.views.append(HomeView(page))
             elif isinstance(prev_view, PeriodView):
-                # Antes: prev_view.data (chocaba con el atributo interno de ft.View)
                 period_data = prev_view.period_data
                 page.views.pop()
                 PeriodController(period_data, page).load_period()

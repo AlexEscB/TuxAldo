@@ -108,4 +108,15 @@ class TransactionDao:
             cursor = conn.cursor()
             cursor.execute('DELETE FROM transactions WHERE id = ?', (transaction_id,))
             return cursor.rowcount > 0
+        
+    def get_transactions_and_data(self, date):
+        transactions = self.find_by_date(date)
+        balance_data = self.get_transactions_in_range(
+            date.strftime('%Y-%m-%d'),
+            date.strftime('%Y-%m-%d')
+        )
+        return {
+            "transactions": transactions,
+            "balance_data": balance_data
+        }
             

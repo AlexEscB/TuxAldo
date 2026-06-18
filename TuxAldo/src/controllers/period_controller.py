@@ -43,8 +43,13 @@ class PeriodController():
         self.page.update()
     
     def load_day(self):
-        data_day = self.t_dao.find_by_date(self.data["date"])
-        new_view = PeriodView(self.page, self.data, data_day)
+        result = self.t_dao.get_transactions_and_data(self.data["date"])
+        
+        self.data["incomes"] = result["balance_data"]["incomes"]
+        self.data["expenses"] = result["balance_data"]["expenses"]
+        self.data["balance"] = result["balance_data"]["balance"]
+        
+        new_view = PeriodView(self.page, self.data, result["transactions"])
         self.page.views.append(new_view)
         self.page.update()
 

@@ -1,5 +1,6 @@
 import flet as ft
 from datetime import datetime
+import config
 
 from UI.Components.UpperFrame import UpperFrame
 from UI.Components.ScrollableList import ScrollableCardList
@@ -77,15 +78,14 @@ class PeriodView(ft.View):
 
     def handle_delete(self, transaction):
         from Database.Repositories.Repository_Transaction import TransactionDao
+        from controllers.period_controller import PeriodController
+        
         dao = TransactionDao()
         if dao.delete_transaction(transaction.id):
-            card = next(
-                (c for c in self.transaction_list.scroll_area.controls
-                 if isinstance(c, TransactionCard) and c.transaction.id == transaction.id),
-                None
-            )
-            if card:
-                self.transaction_list.remove_card(card)
+            config.needs_refresh = True
+            self._page.views.pop()
+            PeriodController(self.period_data, self._page).load_period()
+            self._page.update()
 
     def handle_edit(self, transaction):
         # Pendiente: depende de cómo armes la vista de edición
