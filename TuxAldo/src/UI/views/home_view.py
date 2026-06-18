@@ -43,12 +43,4 @@ class HomeView(ft.View):
             ]
         )
 
-
-
-                         
-                         
-                         
-                         
-        
-        
         

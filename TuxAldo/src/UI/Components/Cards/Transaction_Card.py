@@ -29,41 +29,36 @@ class TransactionCard(ft.Container):
                 ft.Row(
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     controls=[
-
-
                         ft.Text(self.transaction.title, size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
                         ft.Text(self.transaction.category, size=10, color=ft.Colors.GREY_400),
-
                     ]
-
                 ),
-                
                 ft.Text(self.transaction.description, size=12, color=ft.Colors.GREY_400),
-
                 ft.Row(
                     alignment=ft.MainAxisAlignment.END,
                     controls=[
-
                         ft.Text(
-                            f"{prefix} ${self.transaction.value:,.2f}", 
-                            size=18, 
-                            weight=ft.FontWeight.W_600, 
+                            f"{prefix} ${self.transaction.value:,.2f}",
+                            size=18,
+                            weight=ft.FontWeight.W_600,
                             color=amount_color,
                             text_align=ft.TextAlign.RIGHT
                         )
-
                     ]
-
-
-
                 )
+            ],
+        )
 
-                
-            ]
+        # Envolvemos la Column en un Container con superficie pintada
+        # para que el área de detección del ContextMenu cubra toda la card
+        card_surface = ft.Container(
+            content=card_content,
+            bgcolor=ft.Colors.TRANSPARENT,
+            expand=True,
         )
 
         self.content = ContextMenuCustom(
-            content=card_content,
+            content=card_surface,
             items=[
                 ("Editar", lambda e: on_edit(self.transaction) if on_edit else None),
                 ("Eliminar", lambda e: on_delete(self.transaction) if on_delete else None),
